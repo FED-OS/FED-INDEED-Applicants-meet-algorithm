@@ -1,0 +1,27 @@
+/* FED-Indeed — styles.css
+ * Custom theme layer loaded by app.py via load_local_css().
+ * Keep selectors prefixed with .fed-* to avoid collisions with
+ * Streamlit's internal DOM (class names are stable enough for headings).
+ */
+
+/* Slightly tighten Streamlit's default heading rhythm */
+section[data-testid="stHeader"] {
+    background: linear-gradient(90deg, #0e1117 0%, #101a33 100%);
+}
+
+/* Softer max content width on ultra-wide screens */
+.block-container {
+    max-width: 1400px;
+    padding-top: 2rem;
+}
+
+/* Metric emphasis */
+[data-testid="stMetric"] {
+    border-left: 3px solid #58a6ff;
+    padding-left: 0.75rem;
+}
+
+/* Footer / support button spacing */
+.fed-footer a img {
+    margin-top: 0.5rem;
+}
