@@ -1,0 +1,103 @@
+name: Build & Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Lint & smoke test (py${{ matrix.python-version }} on ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🔤 Byte-compile app.py
+        run: python -m py_compile app.py
+
+      - name: 🚬 Import smoke test
+        run: |
+          python - <<'PY'
+          import streamlit
+          import pdfplumber
+          print("streamlit:", streamlit.__version__)
+          print("pdfplumber:", pdfplumber.__version__)
+          print("import smoke test: OK")
+          PY
+
+      - name: ✅ Validate community files present
+        shell: bash
+        run: |
+          set -e
+          for f in README.md LICENSE CONTRIBUTING.md CODE_OF_CONDUCT.md \
+                   SECURITY.md SUPPORT.md CHANGELOG.md ROADMAP.md \
+                   .github/PULL_REQUEST_TEMPLATE.md \
+                   .github/ISSUE_TEMPLATE/bug_report.md \
+                   .github/ISSUE_TEMPLATE/feature_request.md; do
+            if [ ! -f "$f" ]; then
+              echo "::error::Missing required community file: $f"
+              exit 1
+            fi
+          done
+          echo "All required community files present."
+
+      - name: 🧪 Headless Streamlit boot check
+        timeout-minutes: 3
+        run: |
+          pip install pytest
+          (sleep 25; curl --fail http://localhost:8501/_stcore/health && \
+            echo "Streamlit health endpoint OK" && \
+            pkill -f "streamlit run" || true) &
+          streamlit run app.py --server.headless true --server.port 8501
+
+      - name: 📦 Upload app artifact
+        if: matrix.python-version == '3.11'
+        uses: actions/upload-artifact@v4
+        with:
+          name: fed-indeed-app
+          path: |
+            app.py
+            styles.css
+            requirements.txt
+          retention-days: 14
+
+  codeql:
+    name: 🔒 CodeQL security scan
+    permissions:
+      security-events: write
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: python
+
+      - name: 🔍 Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3

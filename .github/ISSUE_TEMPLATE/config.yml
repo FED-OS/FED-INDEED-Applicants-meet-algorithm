@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Ask a question
+    url: https://github.com/YOUR_USERNAME/FED-Indeed/discussions/categories/q-a
+    about: Usage questions belong in Discussions (Q&A) — answers stay searchable for everyone.
+  - name: 💡 Big idea / design discussion
+    url: https://github.com/YOUR_USERNAME/FED-Indeed/discussions/categories/ideas
+    about: Broader proposals (new scoring philosophy, integrations) before they become issues.
+  - name: 📣 Show your before/after
+    url: https://github.com/YOUR_USERNAME/FED-Indeed/discussions/categories/show-and-tell
+    about: Landed interviews after using FED-Indeed? Tell the story — it fuels contributors.
+  - name: 🔒 Report a security vulnerability
+    url: https://github.com/YOUR_USERNAME/FED-Indeed/security/advisories/new
+    about: Please don't use issues for security reports — use the private advisory form (see SECURITY.md).
+  - name: 📖 Read the docs first
+    url: https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/FAQ.md
+    about: The FAQ answers the most common questions before you file anything.
