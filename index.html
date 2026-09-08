@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FED-Indeed — See what the AI sees</title>
+  <meta name="description" content="FED-Indeed is the open-source, privacy-first reverse ATS scanner. Upload a resume, paste a job description, and see exactly what the machines extract — before they reject you." />
+  <meta property="og:title" content="FED-Indeed — See what the AI sees" />
+  <meta property="og:description" content="The open-source, privacy-first reverse ATS scanner. Reverse-engineer the AI gatekeepers." />
+  <meta property="og:image" content="assets/img/social-image.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#07090f" />
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+  <div class="bg-fx"></div>
+  <div class="bg-grid"></div>
+
+  <!-- ============ NAV ============ -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top">
+        <span class="glyph">⌖</span>
+        FED<em>—Indeed</em>
+      </a>
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#demo">Live demo</a>
+        <a href="#start">Quickstart</a>
+        <a href="#roadmap">Roadmap</a>
+        <a class="nav-cta" href="https://github.com/YOUR_USERNAME/FED-Indeed" target="_blank" rel="noopener">★ Star on GitHub</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="kicker"><span class="dot"></span> OPEN SOURCE · MIT · v0.2.0</span>
+        <h1>
+          Your resume gets <span class="grad">read by a machine</span> before any human sees it.
+        </h1>
+        <p class="lede">
+          <strong>FED-Indeed</strong> is a privacy-first, local-first reverse ATS scanner.
+          Upload a resume, paste a job description, and see <strong>exactly</strong> what the
+          filtering algorithms extract — the keywords they find, the layout traps they trip on,
+          and the score they silently assign you.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://github.com/YOUR_USERNAME/FED-Indeed" target="_blank" rel="noopener">
+            ⬇ Clone the repo
+          </a>
+          <a class="btn btn-ghost" href="#demo">▶ Try the live demo</a>
+        </div>
+        <div class="hero-badges">
+          <span class="ok">✔ 100% local</span>
+          <span class="ok">✔ Zero storage</span>
+          <span class="ok">✔ No sign-up</span>
+          <span>Python 3.8+</span>
+          <span>Streamlit + pdfplumber</span>
+        </div>
+      </div>
+
+      <div class="scan-stage">
+        <div class="scan-card" aria-hidden="true">
+          <div class="doc-name">
+            📄 resume_final_v7.pdf
+            <span class="chip">PARSING…</span>
+          </div>
+          <div class="doc-line w90"></div>
+          <div class="doc-line w75 hit"></div>
+          <div class="doc-line w60"></div>
+          <div class="doc-line w84 hit"></div>
+          <div class="doc-line w75 miss"></div>
+          <div class="doc-line w90"></div>
+          <div class="doc-line w60"></div>
+          <div class="scan-readout">
+            <span class="ok">keywords: 15/20</span>
+            <span class="warn">columns: detected</span>
+            <span class="ok">dates: 6 found</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ STATS ============ -->
+  <section class="alt" style="padding-top: 40px;">
+    <div class="wrap">
+      <div class="stats reveal">
+        <div class="stat">
+          <span class="num" data-count="75">0</span>
+          <span class="lbl">% = the usual auto-pass line</span>
+          <span class="sub">score bands: ≥75 / 50–74 / &lt;50</span>
+        </div>
+        <div class="stat">
+          <span class="num" data-count="150">0</span>
+          <span class="lbl">chars = "ghost" image alert</span>
+          <span class="sub">flat-image PDFs parse as blank</span>
+        </div>
+        <div class="stat">
+          <span class="num" data-count="20">0</span>
+          <span class="lbl">JD keywords tracked</span>
+          <span class="sub">matched vs. missing matrix</span>
+        </div>
+        <div class="stat">
+          <span class="num" data-count="0">0</span>
+          <span class="lbl">bytes of your data stored</span>
+          <span class="sub">session memory only. ever.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TERMINAL ============ -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">// getting started</div>
+        <h2>From zero to audit in 40 seconds</h2>
+        <p>Four commands. No accounts, no API keys, no cloud. Your resume never leaves your machine.</p>
+      </div>
+      <div class="terminal reveal" id="terminal">
+        <div class="term-bar"><i></i><i></i><i></i><span>fed-indeed — zsh</span></div>
+        <div class="term-body" id="term-body"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM: HUMAN vs MACHINE ============ -->
+  <section class="alt" id="how">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">// the problem</div>
+        <h2>One document, two completely different readings</h2>
+        <p>Design tools make resumes that humans love and parsers hate. Here's the same resume, both sides.</p>
+      </div>
+      <div class="ba-grid">
+        <div class="ba human reveal">
+          <h3><span class="icon">👤</span> WHAT THE HUMAN SEES</h3>
+          <ul>
+            <li>A polished two-column layout with a clean sidebar</li>
+            <li>Skills visualized as stylish progress bars and icons</li>
+            <li>A beautiful timeline graphic for work history</li>
+            <li>Contact info tucked neatly into the page header</li>
+            <li>"Senior Full-Stack Engineer" title in a display font</li>
+          </ul>
+          <span class="ba-tag">✨ looks great — 10/10 would interview</span>
+        </div>
+        <div class="ba machine reveal">
+          <h3><span class="icon">🤖</span> WHAT THE MACHINE PARSES</h3>
+          <ul>
+            <li class="fixed">"Built backend APIs Managed 5 reports" — columns fused mid-sentence</li>
+            <li class="fixed">Skill bars = images. Zero extractable keywords.</li>
+            <li class="fixed">Timeline dates = graphics. Career reads as 0 years.</li>
+            <li class="fixed">Header content dropped — no email, no phone found</li>
+            <li>"SeniorFull-StackEngineer" — font ligatures mangled the title</li>
+          </ul>
+          <span class="ba-tag">⚠ auto-rejected — nobody will ever know why</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PIPELINE ============ -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">// under the hood</div>
+        <h2>The audit pipeline, stage by stage</h2>
+        <p>Five deterministic stages — no black boxes, no magic. Every number is explainable.</p>
+      </div>
+      <div class="pipeline">
+        <div class="pipe reveal">
+          <div class="node">📥</div>
+          <div>
+            <h3>Upload &amp; input <code>st.file_uploader</code></h3>
+            <p>Your PDF arrives as an in-memory buffer — never written to disk. The job description arrives as plain text. The audit waits for both, deliberately.</p>
+          </div>
+        </div>
+        <div class="pipe reveal">
+          <div class="node">⛏</div>
+          <div>
+            <h3>Aggressive parse <code>pdfplumber · layout=False</code></h3>
+            <p>Text extracted exactly the way a line-by-line ATS reader does — ignoring your careful visual positioning, just like they do.</p>
+          </div>
+        </div>
+        <div class="pipe reveal">
+          <div class="node">🧹</div>
+          <div>
+            <h3>Tokenize &amp; filter <code>stop-words · len &gt; 2</code></h3>
+            <p>Both sides lowercased and tokenized; JD noise stripped; the top-20 highest-frequency terms become the scoring targets.</p>
+          </div>
+        </div>
+        <div class="pipe reveal">
+          <div class="node">🛠</div>
+          <div>
+            <h3>Structural checks <code>3 heuristics</code></h3>
+            <p>Ghost-image detection (&lt;150 chars), multi-column back-jump detection, and machine-readable date validation — the silent killers, caught first.</p>
+          </div>
+        </div>
+        <div class="pipe reveal">
+          <div class="node">📊</div>
+          <div>
+            <h3>Score &amp; render <code>Jaccard coverage</code></h3>
+            <p>Match index = fraction of JD keywords found verbatim in your text. Bands: ≥75% Safe · 50–74% Borderline · &lt;50% High Risk.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">// capabilities</div>
+        <h2>Everything in the scanner, honestly labeled</h2>
+        <p>What v0.2.0 does today — and the wiki documents every limit, because a checker that hides its limits is selling comfort, not insight.</p>
+      </div>
+      <div class="features">
+        <div class="feat reveal"><div class="ic">📊</div><h3>ATS Compatibility Score</h3><p>Jaccard-style coverage of the JD's top-20 keywords, with Safe / Borderline / High-Risk bands mirroring common filter cutoffs.</p></div>
+        <div class="feat reveal"><div class="ic">🤖</div><h3>Raw Text Stream</h3><p>The literal string a parser extracts — merged words, scrambled columns and all. Most users see their resume honestly for the first time.</p></div>
+        <div class="feat reveal"><div class="ic">🎯</div><h3>Keyword Matrix</h3><p>Matched vs. missing high-value terms from the job description, so every score point is traceable to a fixable gap.</p></div>
+        <div class="feat reveal"><div class="ic">👻</div><h3>Ghost-Image Detection</h3><p>Design-tool exports that are really flat images parse as ~blank. Under 150 characters triggers a fatal alert before you waste an application.</p></div>
+        <div class="feat reveal"><div class="ic">📐</div><h3>Multi-Column Alert</h3><p>Detects the side-by-side layouts that fuse into nonsense strings like "Built backend APIs Managed 5 reports."</p></div>
+        <div class="feat reveal"><div class="ic">🗓</div><h3>Timeline Validation</h3><p>Verifies machine-readable date patterns (Month YYYY, MM/YYYY, Present) — unparseable timelines read as zero verifiable experience.</p></div>
+        <div class="feat reveal"><div class="ic">🔒</div><h3>Privacy by Architecture</h3><p>No database, no accounts, no telemetry, no network calls. In-memory only. Close the tab and it's gone — that's the guarantee.</p></div>
+        <div class="feat reveal"><div class="ic">🧩</div><h3>Optional LLM Prompts</h3><p>Curated, privacy-first prompt templates for synonym mapping and honest rewrites — user-keyed, never required, never auto-run.</p></div>
+        <div class="feat reveal"><div class="ic">🛰</div><h3>Free Public Hosting</h3><p>Stateless by design, so anyone can deploy a public instance on Streamlit Community Cloud's free tier in two minutes.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTERACTIVE DEMO ============ -->
+  <section id="demo">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">// try it right here</div>
+        <h2>The audit engine, running in your browser</h2>
+        <p>This is the actual v0.2.0 scoring logic, ported to JavaScript — nothing uploads, nothing sends. Edit the text and hit <strong>Run audit</strong>.</p>
+      </div>
+      <div class="whats-new reveal">
+        <div class="wn-item"><b>🧠 Skill aliases</b><span>k8s → kubernetes, postgres → postgresql — shorthand now counts</span></div>
+        <div class="wn-item"><b>🔀 Suffix stemming</b><span>pipelines ↔ pipeline, managing ↔ managed finally match</span></div>
+        <div class="wn-item"><b>⚖️ TF-weighted score</b><span>keywords repeated in the JD weigh more than one-hit wonders</span></div>
+        <div class="wn-item"><b>🎓 Sub-scores + grade</b><span>keyword / structure / timeline breakdown with an A–F composite</span></div>
+      </div>
+      <div class="demo-shell reveal">
+        <div class="demo-bar">
+          <span class="lbl">FED-DEMO · v0.2.0-logic · 100% client-side</span>
+          <div class="demo-tabs">
+            <button id="tab-load" class="active" type="button">Load sample</button>
+            <button id="tab-clear" type="button">Clear</button>
+            <button id="tab-garble" type="button">Simulate bad parse</button>
+          </div>
+        </div>
+        <div class="demo-grid">
+          <div class="demo-pane">
+            <label for="demo-resume">📄 RESUME TEXT (paste your export)</label>
+            <textarea id="demo-resume" spellcheck="false"></textarea>
+          </div>
+          <div class="demo-pane">
+            <label for="demo-jd">📋 JOB DESCRIPTION (paste the posting)</label>
+            <textarea id="demo-jd" spellcheck="false"></textarea>
+          </div>
+        </div>
+        <div class="demo-run">
+          <span class="note">⚠ demo uses pasted text — the real app parses PDFs with pdfplumber</span>
+          <button class="btn btn-primary btn-sm" id="btn-run" type="button">▶ Run audit</button>
+        </div>
+        <div class="demo-out" id="demo-out" hidden>
+          <div class="score-hero">
+            <div class="gauge" id="gauge"><div class="val"><span id="gauge-val">0%</span><small>MATCH</small></div></div>
+            <div class="score-meta">
+              <span class="band safe" id="score-band">✅ SAFE MATCH</span>
+              <span class="grade-badge" id="score-grade" hidden title="Composite grade">B</span>
+              <p id="score-desc"></p>
+            </div>
+          </div>
+          <div class="subscores" id="subscores"></div>
+          <div class="alias-note" id="alias-note" hidden></div>
+          <div class="alerts" id="alerts"></div>
+          <div class="kw-title">🎯 KEYWORD MATRIX — MATCHED</div>
+          <div class="kw-cloud" id="kw-match"></div>
+          <div class="kw-title">🎯 KEYWORD MATRIX — MISSING</div>
+          <div class="kw-cloud" id="kw-miss"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUICKSTART ============ -->
+  <section class="alt" id="start">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">// quickstart</div>
+        <h2>Run it locally in three steps</h2>
+        <p>Everything you need is in the repo. Full details in INSTALL.md.</p>
+      </div>
+      <div class="qs-grid">
+        <div class="qs reveal">
+          <div class="step">STEP 01</div>
+          <h3>Clone the repository</h3>
+          <p>Grab the code and step inside.</p>
+          <div class="codeblock">
+            <button class="copy-btn" data-copy="code-1" type="button">copy</button>
+            <pre id="code-1"><span class="cmt"># clone &amp; enter</span>
+git clone https://github.com/YOUR_USERNAME/FED-Indeed.git
+cd FED-Indeed</pre>
+          </div>
+        </div>
+        <div class="qs reveal">
+          <div class="step">STEP 02</div>
+          <h3>Install dependencies</h3>
+          <p>Two packages — that's the entire dependency tree.</p>
+          <div class="codeblock">
+            <button class="copy-btn" data-copy="code-2" type="button">copy</button>
+            <pre id="code-2"><span class="cmt"># virtualenv (recommended) then:</span>
+pip install -r requirements.txt</pre>
+          </div>
+        </div>
+        <div class="qs reveal">
+          <div class="step">STEP 03</div>
+          <h3>Launch the scanner</h3>
+          <p>Browser opens at localhost:8501. Upload, paste, audit.</p>
+          <div class="codeblock">
+            <button class="copy-btn" data-copy="code-3" type="button">copy</button>
+            <pre id="code-3"><span class="cmt"># that's it — no keys, no config</span>
+streamlit run app.py</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ROADMAP ============ -->
+  <section id="roadmap">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">// roadmap</div>
+        <h2>What the machine does next</h2>
+        <p>Staged by impact. Community votes genuinely reorder these — full detail in ROADMAP.md.</p>
+      </div>
+      <div class="stages">
+        <div class="stage reveal">
+          <span class="tag">STAGE 1 · next</span>
+          <div>
+            <h3><span class="now">Validation hardening</span></h3>
+            <p>Fuzzy &amp; stemmed matching ("manage" ↔ "management"), contact-info validation, user-adjustable pass threshold, JD sectioning that ignores Benefits boilerplate.</p>
+          </div>
+        </div>
+        <div class="stage reveal">
+          <span class="tag">STAGE 2</span>
+          <div>
+            <h3>Weighted &amp; temporal scoring</h3>
+            <p>Required-vs-preferred weighting, per-skill tenure extraction, and section-aware parsing that scores Work / Education / Skills separately.</p>
+          </div>
+        </div>
+        <div class="stage reveal">
+          <span class="tag">STAGE 3</span>
+          <div>
+            <h3>Depth &amp; insight</h3>
+            <p>Action-verb &amp; impact analysis, graphics-to-text ratio checks, semantic synonym mapping via the local prompt templates, education parsing.</p>
+          </div>
+        </div>
+        <div class="stage reveal">
+          <span class="tag">STAGE 4</span>
+          <div>
+            <h3>Power users</h3>
+            <p>Batch multi-JD comparison, session-local score history, DOCX input — while staying local-first, always.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMMUNITY ============ -->
+  <section class="alt">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-kicker">// community</div>
+        <h2>Built by people who got filtered</h2>
+        <p>Every check in this engine started as somebody's bad day. The next one could start as yours.</p>
+      </div>
+      <div class="comm-grid">
+        <a class="comm reveal" href="https://github.com/YOUR_USERNAME/FED-Indeed/issues" target="_blank" rel="noopener">
+          <div class="ic">🐛</div><h3>Report a bug</h3><p>Structured issue forms — synthetic samples only, privacy always.</p>
+        </a>
+        <a class="comm reveal" href="https://github.com/YOUR_USERNAME/FED-Indeed/discussions" target="_blank" rel="noopener">
+          <div class="ic">💬</div><h3>Join discussions</h3><p>Field reports, design debates, and the threads that become roadmap items.</p>
+        </a>
+        <a class="comm reveal" href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">
+          <div class="ic">🛠</div><h3>Contribute a check</h3><p>wiki/Adding-New-Checks.md walks you through your first parser heuristic.</p>
+        </a>
+        <a class="comm reveal" href="https://ko-fi.com/YOUR_USERNAME" target="_blank" rel="noopener">
+          <div class="ic">☕</div><h3>Buy a coffee</h3><p>Optional, never paywalled — keeps the scans free for everyone.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FINAL CTA ============ -->
+  <section class="final">
+    <div class="wrap">
+      <h2 class="reveal">The machines already read your resume.<br/>Shouldn't you get to read it back?</h2>
+      <p class="reveal">Free forever. Local always. Honest by design.</p>
+      <div class="cta-row reveal" style="justify-content: center;">
+        <a class="btn btn-primary" href="https://github.com/YOUR_USERNAME/FED-Indeed" target="_blank" rel="noopener">⬇ Get FED-Indeed</a>
+        <a class="btn btn-ghost" href="#demo">▶ Re-run the demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <a class="brand" href="#top">
+            <span class="glyph">⌖</span>
+            FED<em>—Indeed</em>
+          </a>
+          <p>The open-source reverse ATS scanner. Reverse-engineer the AI gatekeepers — see what they see, fix what they break.</p>
+        </div>
+        <div>
+          <h4>Project</h4>
+          <ul>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/README.md" target="_blank" rel="noopener">README</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/ROADMAP.md" target="_blank" rel="noopener">Roadmap</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/releases" target="_blank" rel="noopener">Releases</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Learn</h4>
+          <ul>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/wiki/How-It-Works.md" target="_blank" rel="noopener">How it works</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/wiki/Scoring-Methodology.md" target="_blank" rel="noopener">Scoring methodology</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/wiki/ATS-Field-Guide.md" target="_blank" rel="noopener">ATS field guide</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/FAQ.md" target="_blank" rel="noopener">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Community</h4>
+          <ul>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/CODE_OF_CONDUCT.md" target="_blank" rel="noopener">Code of conduct</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/SUPPORT.md" target="_blank" rel="noopener">Support</a></li>
+            <li><a href="https://github.com/YOUR_USERNAME/FED-Indeed/blob/main/SECURITY.md" target="_blank" rel="noopener">Security</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© 2026 FED-Indeed contributors · MIT License · Not affiliated with Indeed or any ATS vendor.</span>
+        <a href="https://ko-fi.com/YOUR_USERNAME" target="_blank" rel="noopener">
+          <img height="30" style="border:0px;height:30px;" src="https://ko-fi.com/img/githubbutton_sm.svg" border="0" alt="Buy Me a Coffee at ko-fi.com" />
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/engine.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
