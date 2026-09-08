@@ -11,14 +11,14 @@ appreciated but never required (MIT License — see [LICENSE](LICENSE)).
   title  = {FED-Indeed: An Open-Source Reverse ATS Scanner},
   year   = {2026},
   url    = {https://github.com/YOUR_USERNAME/FED-Indeed},
-  note   = {Version 0.1.0, MIT License}
+  note   = {Version 0.2.0, MIT License}
 }
 ```
 
 ## Short Form
 
 > FED-Indeed contributors. *FED-Indeed: An Open-Source Reverse ATS Scanner.*
-> https://github.com/YOUR_USERNAME/FED-Indeed (v0.1.0), 2026. MIT License.
+> https://github.com/YOUR_USERNAME/FED-Indeed (v0.2.0), 2026. MIT License.
 
 ## Academic Lineage — Ideas This Project Builds On
 

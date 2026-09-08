@@ -64,11 +64,17 @@ filters for job seekers.
 
 ## Scoring Baseline (Do Not Casually Change)
 
-Users compare scores across versions; the v0.1.0 baseline is the contract:
+Users compare scores across versions. The v0.2.0 baseline is the contract —
+the v0.1.0 flat exact-match formula is preserved in
+`wiki/Scoring-Methodology.md` for history:
 
-- Match index: `|resume ∩ JD keywords| ÷ |JD keywords| × 100`
+- Keyword score: TF-weighted coverage — `Σ(count of matched JD keywords) ÷
+  Σ(count of all tracked JD keywords) × 100` over the top-20 stemmed keywords
+  (stop-word filtered, `len > 2`), with skill aliases (`k8s → kubernetes`,
+  `postgres → postgresql`, …) and deterministic suffix stemming
+- Composite score: `0.6 × keyword + 0.25 × structure + 0.15 × timeline`
+- Grades: A ≥ 85 · B ≥ 70 · C ≥ 55 · D ≥ 40 · F below
 - Bands: ≥ 75% Safe · 50–74% Borderline · < 50% High Risk
-- Stop-word set and the `len > 2` keyword filter as defined in `app.py`
 - Image-document threshold: 150 parsed characters
 - Multi-column heuristic: >3 x0 back-jumps within the first 40 words
 - Date regex: `Month YYYY`, `MM/YYYY`, `Present`

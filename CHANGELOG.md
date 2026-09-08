@@ -6,17 +6,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- Hero chip on the website now reads the v0.2.0 demo numbers (15/20).
+
+## [0.2.0] — 2026-09-07
+
 ### Added
-- Optional `styles.css` theme hook loaded by `app.py`.
-- Community scaffolding: issue templates, PR template, discussions guide,
-  funding links, CI workflow, offline wiki, LLM prompt templates.
-- Meta-documentation: INSTALL, BUILD, DEPLOYMENT, usage, FAQ, SUPPORT,
-  SECURITY, PRICING, GOVERNANCE, ROADMAP, ADR, CITATIONS, AUTHORS,
-  MAINTAINERS, CLAUDE.md, AGENTS.md, SUMMARY.
+- **Project website** (`docs/`) — dark "machine scan" landing page for
+  GitHub Pages with hero, live stats, typing terminal, quickstart, roadmap
+  and community sections.
+- **In-browser demo** of the audit engine (`docs/assets/js/engine.js`),
+  running 100% client-side — paste resume + JD text, get the score, band,
+  grade, sub-scores, structural alerts, and matched/missing keyword matrix
+  instantly. Includes a "Simulate bad parse" mode that shows what column
+  fusing does to a resume.
+- **Engine extracted to `fed_engine.py`** — the scoring logic is now an
+  importable, unit-testable module (`tests/test_engine.py`, 35 unit tests).
+  `app.py` consumes it; behavior is identical.
+- **Skill aliases** — shorthand skill names now match their canonical forms
+  (`k8s` → `kubernetes`, `postgres` → `postgresql`, `js` → `javascript`,
+  `ts` → `typescript`, `nodejs` → `node`, `reactjs` → `react`, `vuejs` →
+  `vue`, `nextjs` → `next`). Applied on both resume and JD sides, reported
+  as "alias hits" in the results.
+- **Suffix stemming** — deterministic suffix stemmer collapses word variants
+  onto one stem (`pipelines` ↔ `pipeline`, `managing` ↔ `managed`,
+  `technologies` ↔ `technology`). Guarded so acronyms (`aws`, `css`, `sql`)
+  and `ss`/`us`/`is` words (`class`, `status`, `redis`, `kinesis`) are never
+  mangled.
+- **TF-weighted keyword scoring** — a keyword mentioned 5× in the JD now
+  carries more weight than one mentioned once (v0.1.0 was flat-count).
+- **Sub-scores + letter grade** — keyword / structure / timeline breakdown,
+  blended into a composite (60/25/15) with an A–F grade.
+- **Exportable scan report** — one-click JSON download of the full audit
+  (score, band, grade, sub-scores, matched/missing keywords, alias hits).
+- **Session history** — the sidebar remembers the last 5 audits this
+  session (time, band, score, grade); clearable, never persisted to disk.
+- **v0.2.0 engine cross-check** — `docs/tests/engine_crosscheck.js` compares
+  *all* result fields (score, grade, composite, sub-scores, matched/missing
+  lists, alias hits, dates) between the JS port and `fed_engine.py` across
+  5 test cases, plus stem/canonical primitive parity.
+- Python unit tests in CI (`python3 -m unittest discover -s tests`).
 
 ### Changed
-- Project renamed to **FED-Indeed** (previously the working title
-  "OpenATS").
+- **`app.py` UI** — grade badge, sub-score breakdown bars, alias-assist
+  callout, progress bar on keyword matrix, JSON report download button,
+  session history in the sidebar.
+- **Website demo** — new sample data showcasing the upgrades (baseline
+  64.4% BORDERLINE, grade B; `k8s` alias hit; `pipelines` stem match), new
+  sub-score bars, grade badge, "What's new in v0.2.0" strip, garble run
+  drops the score further (fused stream, columns alert).
+- `docs/assets/js/engine.js` — JS port upgraded to v0.2.0 parity; result
+  field names now mirror Python exactly (snake_case).
+
+### Fixed
+- v0.1.0 missed real matches like `pipelines` vs `pipelines` under the
+  hood (flat token matching) — v0.2.0 stemming and aliases fix this class
+  of false negatives.
 
 ## [0.1.0] — 2026-09-07
 

@@ -7,6 +7,9 @@ Check items off; don't delete them (history is useful).
 
 ## 🔧 Before Public Launch
 
+- [x] Eye-catching GitHub Pages website (`docs/` — hero, live JS demo of the
+  engine, terminal, quickstart; cross-checked against Python)
+- [ ] Enable GitHub Pages (Settings → Pages → main `/docs`) after push
 - [ ] Global find-and-replace `YOUR_USERNAME` → actual GitHub handle
   (README, app.py ko-fi links, docs)
 - [ ] Update `MAINTAINERS.md` and `SECURITY.md` with real contact email
@@ -19,7 +22,8 @@ Check items off; don't delete them (history is useful).
 ## ⚡ Quick Wins (Stage 1 — from ROADMAP)
 
 - [ ] Contact-info validation (email / phone / LinkedIn regex + alert)
-- [ ] Fuzzy & stemmed keyword matching (Porter stemmer + acronym map)
+- [x] Fuzzy & stemmed keyword matching (Porter-style stemmer + alias map)
+  → **shipped in v0.2.0** (`fed_engine.py`: stemmer + SKILL_ALIASES)
 - [ ] User-adjustable pass threshold slider (60–85%)
 - [ ] JD sectioning: ignore "Benefits" boilerplate in scoring
 

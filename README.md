@@ -10,8 +10,11 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org)
 [![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B.svg)](https://streamlit.io)
 [![CI](https://img.shields.io/badge/CI-GitHub_Actions-2088FF.svg)](.github/workflows/build.yml)
-[![Version](https://img.shields.io/badge/version-0.1.0-orange.svg)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-0.2.0-orange.svg)](CHANGELOG.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![Website](https://img.shields.io/badge/website-GitHub_Pages-22d3ee.svg)](https://YOUR_USERNAME.github.io/FED-Indeed/)
+
+**[🌐 Try the live in-browser demo →](https://YOUR_USERNAME.github.io/FED-Indeed/#demo)**
 
 </div>
 
@@ -60,6 +63,8 @@ streamlit run app.py
 Your browser opens at `http://localhost:8501`. Upload a PDF resume, paste a
 job description, and watch the audit run live.
 
+No install at all? **[Run the audit in your browser instead →](https://YOUR_USERNAME.github.io/FED-Indeed/#demo)** (same scoring engine, zero download).
+
 Full setup details (including pipenv/conda variants): **[INSTALL.md](INSTALL.md)**
 · Everyday usage: **[usage.md](usage.md)** · FAQ: **[FAQ.md](FAQ.md)**
 
@@ -81,12 +86,16 @@ Meta-docs live at the root: [ROADMAP.md](ROADMAP.md) · [CHANGELOG.md](CHANGELOG
 
 ## 🧪 Example Session
 
-1. **Score gauge** — your match percentage with a colour-coded status.
+1. **Score gauge + grade badge** — your match percentage, colour-coded band,
+   and an A–F composite grade with sub-score bars (keyword / structure /
+   timeline).
 2. **Raw text stream** — exactly what the ATS extracts. You'll often spot
    merged words and scrambled columns here for the first time.
-3. **Keyword matrix** — matched vs. missing high-value terms.
+3. **Keyword matrix** — matched vs. missing high-value terms, TF-weighted,
+   with `k8s` → `kubernetes` style alias hits flagged.
 4. **Structural alerts** — e.g. *"❌ Multi-column spacing detected"* or
    *"⚠️ Timeline parsing alert"* with fix instructions.
+5. **Exportable report** — one-click JSON download of the full audit.
 
 ## 🛠️ How to Contribute
 
@@ -107,9 +116,10 @@ deploy with default settings, and share the link. See
 
 ## 🗺️ Roadmap Highlights
 
-Weighted required-vs-preferred scoring · skill-tenure extraction · fuzzy /
-stemmed matching · contact-info validation · action-verb analysis · batch
-multi-JD comparison. Full plan: [ROADMAP.md](ROADMAP.md).
+~~Fuzzy / stemmed matching~~ · ~~skill aliases~~ ✅ **shipped in v0.2.0** —
+next up: weighted required-vs-preferred scoring · skill-tenure extraction ·
+contact-info validation · action-verb analysis · batch multi-JD comparison.
+Full plan: [ROADMAP.md](ROADMAP.md).
 
 ## 📜 License
 

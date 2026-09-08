@@ -50,11 +50,11 @@ reading order intact.
 
 The engine looks for `Month YYYY` (e.g., `March 2022`), `MM/YYYY`, and the
 word `Present`. Styles like `2022 – now`, `Q1 2022`, or `March 22` aren't
-matched in v0.1.0. Write out the full month and year.
+matched in v0.2.0. Write out the full month and year.
 
 ## Does it support DOCX?
 
-Not in v0.1.0 — PDF only. DOCX support is on the roadmap. Meanwhile, convert
+Not in v0.2.0 — PDF only. DOCX support is on the roadmap. Meanwhile, convert
 with Word/LibreOffice's *export to PDF* (not print-to-image).
 
 ## Can I use this to mass-apply?

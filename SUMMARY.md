@@ -20,16 +20,22 @@ description; the app shows exactly what a deterministic ATS parser extracts,
 scores keyword alignment, and flags structural failure modes — with concrete
 fixes for each.
 
-## Core Capabilities (v0.1.0)
+## Core Capabilities (v0.2.0)
 
 - **Aggressive PDF extraction** via pdfplumber, emulating line-by-line ATS
   readers.
-- **ATS Compatibility Rating** — Jaccard-style index with Safe / Borderline /
-  High-Risk bands against common ~75% filter thresholds.
+- **ATS Compatibility Rating** — TF-weighted keyword coverage with
+  Safe / Borderline / High-Risk bands against common ~75% filter thresholds.
+- **Skill aliases** (`k8s → kubernetes`, `postgres → postgresql`) and
+  **suffix stemming** (`pipelines ↔ pipeline`) so surface-form differences
+  stop costing matches.
+- **Composite grade** — `0.6 × keyword + 0.25 × structure + 0.15 × timeline`
+  sub-scores rolled into an A–F grade.
 - **Structural checks** — flat-image detection, multi-column scrambling
   alerts, timeline date validation.
 - **Raw Text Stream** — the literal internal string capture, shown verbatim.
-- **Keyword Matrix** — the JD's top-20 terms, matched vs. missing.
+- **Keyword Matrix** — the JD's top-20 terms, matched vs. missing, with a
+  one-click JSON report export.
 - **Zero persistence** — everything in session memory; nothing leaves the
   user's machine.
 
@@ -50,7 +56,7 @@ features are user-keyed templates in [prompts/](prompts/).
 
 ## Status & Direction
 
-v0.1.0 shipped the core audit. [ROADMAP.md](ROADMAP.md) sequences the rest:
+v0.2.0 shipped the core audit plus the upgraded engine. [ROADMAP.md](ROADMAP.md) sequences the rest:
 fuzzy matching and contact validation next, then weighted
 required-vs-preferred scoring, skill-tenure extraction, and section-aware
 parsing.
