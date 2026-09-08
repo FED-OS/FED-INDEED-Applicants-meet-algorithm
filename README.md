@@ -2,6 +2,8 @@
 
 <img src="social-image.png" alt="FED-Indeed banner — See what the AI sees" width="820"/>
 
+https://fed-indeed-applicants-meet-algorithm-hwo4hp83ksox4mpgzrgt8k.streamlit.app/
+
 # 📂 FED-Indeed
 
 **Reverse-engineer the AI gatekeepers. See what they see, fix what they break.**
