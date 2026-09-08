@@ -1,6 +1,6 @@
 # How It Works
 
-The complete v0.1.x pipeline, from upload to rendered audit — five stages,
+The complete v0.2.x pipeline, from upload to rendered audit — five stages,
 all in one Streamlit session, all in memory.
 
 ## Stage 1 — Upload & Input
@@ -33,23 +33,26 @@ Two extractions happen per page:
 
 The concatenated text across pages becomes `raw_extracted_text`.
 
-## Stage 3 — Cleaning & Keyword Selection
+## Stage 3 — Cleaning, Aliasing & Stemming (v0.2.0)
 
 ```python
-def clean_text(text):
+def tokenize(text):
     return re.findall(r"\b\w+\b", text.lower())
 
-resume_words = clean_text(raw_extracted_text)
-jd_words = clean_text(job_description)
-jd_keywords = [w for w in jd_words if w not in STOP_WORDS and len(w) > 2]
-jd_counts = Counter(jd_keywords).most_common(20)
+# v0.2.0 pipeline, applied to BOTH sides:
+jd_keywords = [canonical(w) for w in tokenize(job_description)
+               if canonical(w) not in STOP_WORDS and len(canonical(w)) > 2]
+jd_counts   = Counter(stem(w) for w in jd_keywords).most_common(20)
 ```
 
 Both sides are lowercased and tokenized on word boundaries. JD tokens pass
-a stop-word filter (the, and, of, for…) and a `len > 2` floor, then the
-top-20 by frequency become the scoring targets — the **Keyword Matrix**.
-The resume side keeps *all* tokens; only the JD side is filtered, because
-we're measuring JD coverage, not resume noise.
+a stop-word filter (the, and, of, for…) and a `len > 2` floor, then
+**aliases** (`k8s` → `kubernetes`, `postgres` → `postgresql`) and the
+**deterministic stemmer** (`pipelines` → `pipelin`) collapse variants onto
+shared stems, and the top-20 by frequency become the scoring targets — the
+**Keyword Matrix**. The resume side keeps *all* tokens (also
+canonicalised + stemmed); only the JD side is filtered, because we're
+measuring JD coverage, not resume noise.
 
 ## Stage 4 — Structural Checks
 
@@ -75,21 +78,29 @@ first.
 ## Stage 5 — Scoring & Rendering
 
 ```python
-set_resume = set(resume_words)
-set_jd = set(jd_keywords)
-intersection = set_resume & set_jd
-jaccard_score = len(intersection) / len(set_jd) * 100
+tracked    = top_keywords(job_description)          # [(stem, surface, count)]
+r_stems    = resume_stem_set(raw_extracted_text)    # {stem(canonical(w))}
+
+match_w    = Σ count(k) for k in tracked if k.stem in r_stems
+total_w    = Σ count(k) for k in tracked
+match_index = match_w / total_w * 100               # TF-weighted (v0.2.0)
+
+composite  = 0.6 × keyword + 0.25 × structure + 0.15 × timeline
+grade      = A–F on the composite
 ```
 
-The index is JD-keyword **coverage**: of the terms the filter will look
-for, what fraction can it find in your text? Bands at ≥75% (Safe),
-50–74% (Borderline), <50% (High Risk) — see
+The index is JD-keyword **coverage, weighted by JD frequency** (TF): a
+keyword the JD repeats 5× weighs 5× when matched — and 5× when missing.
+Bands at ≥75% (Safe), 50–74% (Borderline), <50% (High Risk) — see
 [Scoring-Methodology](Scoring-Methodology.md) for why those lines and what
-they honestly do and don't mean.
+they honestly do and don't mean. The composite grade blends keyword,
+structure, and timeline sub-scores into one A–F letter for quick gut
+checks.
 
-Finally, Streamlit renders the four panels — score, structural integrity,
-raw stream, keyword matrix — and re-runs the entire pipeline on every
-input change. There is no caching layer yet (planned: `@st.cache_data` on
+Finally, Streamlit renders the panels — score + grade, sub-score bars,
+structural integrity, raw stream, keyword matrix, alias-hit callout, the
+JSON report export — and re-runs the entire pipeline on every input
+change. There is no caching layer yet (planned: `@st.cache_data` on
 parsing, see roadmap).
 
 ## What Deliberately Does *Not* Happen

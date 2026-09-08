@@ -87,7 +87,7 @@ expansion is roadmap material.)
 
 ### The app feels slow on my 10-page resume
 
-Every input change re-runs the full pipeline (no cache in v0.1.0).
+Every input change re-runs the full pipeline (no cache as of v0.2.0).
 Parsing a large PDF per keystroke is the cost. Reduce re-pastes of the JD
 (finalize it first), and expect caching (`@st.cache_data`) to land on the
 roadmap's engineering-health track.
